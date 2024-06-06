@@ -21,5 +21,7 @@ app.listen(port, () => {
     console.log("We are listening at Port: ", port )
 })
 
-
+app.get("/", (req, res) => {
+    res.render("/", { title: "Home" })
+})
 
