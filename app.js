@@ -2,9 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const bcrypt = require('bcrypt')
 const path = require("path")
-const fileURLPath = require('url')
-const __filename = fileURLPath(import.meta.url)
-const __dirname = path.__dirname(__filename)
+
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -22,6 +20,8 @@ app.listen(port, () => {
 })
 
 app.get("/", (req, res) => {
-    res.render("", { title: "Home" })
+    res.render("index", { title: "Home" })
 })
+
+
 
