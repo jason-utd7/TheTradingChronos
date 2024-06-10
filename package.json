@@ -1,0 +1,24 @@
+{
+  "name": "thetradingchronos",
+  "version": "1.0.0",
+  "description": "This is the scripts for all of the projects backend and possibly front end ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "THETRADINGCHRONOS"
+  },
+  "author": "Davey & Jason",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.1.3"
+  },
+  "keywords": []
+}
