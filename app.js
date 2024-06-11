@@ -25,20 +25,72 @@ app.get("/", (req, res) => {
 
 app.post("/signup", async (req, res) => {
     const { email, password } = req.body;
+    
     if (!email || !password) {
         return res.status(400).send("Please enter email and password.");
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    db.query('INSERT INTO users (email, password, salt) VALUES (?, ?, ?)', [email, hashedPassword, salt], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send("Server error.");
+    const newUser = {email: req.body.email, password: hashedPassword};
+
+    let users = [];
+
+    try {
+        const dbContent =  db.query('SELECT * FROM users');
+
+        users = JSON.parse(dbContent);
+
+        if(!Array.isArray(users))
+            {
+                users = [];
+            }
+
+    } catch (error) {
+        if(error.code !== "ENOENT")
+            {
+                console.error(error);
+                res.status(500).json({
+                    success: false,
+                    message: "An error occured while reading from the database"
+                });
+                return;
+            }
+    }
+
+    const existingUser = users.find((user) => user.email === newUser.email);
+
+    if(existingUser)
+        {
+            res
+            .status(400)
+            .json({ success: false, message: "Email is Already In Use"});
+            return;
         }
-        res.status(201).send("User registered.");
+
+        users.push(newUser)
+    try { 
+        JSON.stringify(users);
+        
+        db.query('INSERT INTO users (email, password, salt) VALUES (?, ?, ?)', [users], (err, result) => {
+            console.log(result);
+      
+        });
+
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({
+             success:false,
+             message: "An error occured trying to load from the database server",
+        });
+        return;
+    }
+
+    res.json({success: true, message:"Account created successfully"})
     });
-});
+
+    
+
 
 app.post("/signin", (req, res) => {
     const { email, password } = req.body;
