@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bcrypt = require('bcrypt');
 const path = require("path");
-const db = require("./config/db");
+const mysql = require("mysql");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,6 +14,16 @@ app.use(express.static("Images"));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(express.json());
+
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '1234',
+    database: 'trading_bot'
+});
+
+
 
 app.listen(port, () => {
     console.log("We are listening at Port: ", port);
