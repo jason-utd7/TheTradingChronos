@@ -2,10 +2,22 @@ const express = require('express');
 const morgan = require('morgan');
 const bcrypt = require('bcrypt');
 const path = require("path");
-const mysql = require("mysql");
+const {createPool} = require("mysql");
+const env = require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+const root = process.env.rootMatterz;
+
+const pool = createPool({
+    host:"localhost",
+    user: "root",
+    password: root,
+    database: "trading_bot",
+    connectionLimit: 10    
+});
+
+
 
 app.set("view engine", "ejs");
 app.use(express.static("css"));
@@ -16,18 +28,20 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '1234',
-    database: 'trading_bot'
-});
+
 
 
 
 app.listen(port, () => {
     console.log("We are listening at Port: ", port);
 });
+
+pool.query(`select * from users`, (err, result, fields) => {
+    if(err){
+        return console.log(err)
+    }
+    return console.log(result);
+})
 
 app.get("/", (req, res) => {
     res.render("index", { title: "Home" });
