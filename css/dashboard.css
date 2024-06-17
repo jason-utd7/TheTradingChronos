@@ -1,0 +1,42 @@
+*
+{
+    margin: 0;
+    padding:0;
+}
+
+.mainDiv{
+    border: 5px solid black;
+    height: 1920px;
+    width: 1280px;
+}
+
+.header
+{
+    height: 200px;
+    width: 100%;
+    border: 5px solid black;
+    display: flex;
+}
+
+.logo
+{
+    width:25%;
+    height: 100%;
+    border: 5px solid blue;
+
+}
+
+.logoPic
+{
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+
+.title
+{
+    width: 75%;
+    height: 100%;
+    border: 4px solid yellow;
+}
+
