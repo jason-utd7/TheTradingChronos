@@ -44,7 +44,11 @@ pool.query(`select * from users`, (err, result, fields) => {
 })
 
 app.get("/", (req, res) => {
-    res.render("index", { title: "Home" });
+    res.render("index", { title: "Registration" });
+});
+
+app.get("/home", (req, res) => {
+    res.render("dashboard", {title: "Home Page"});
 });
 
 app.post("/signup", async (req, res) => {
@@ -53,6 +57,7 @@ app.post("/signup", async (req, res) => {
     if (!email || !password) {
         return res.status(400).send("Please enter email and password.");
     }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -61,7 +66,7 @@ app.post("/signup", async (req, res) => {
     let users = [];
 
     try {
-        const dbContent =  db.query('SELECT * FROM users');
+        const dbContent =  pool.query('SELECT * FROM users');
 
         users = JSON.parse(dbContent);
 
@@ -96,7 +101,7 @@ app.post("/signup", async (req, res) => {
     try { 
         JSON.stringify(users);
         
-        db.query('INSERT INTO users (email, password, salt) VALUES (?, ?, ?)', [users], (err, result) => {
+        pool.query('INSERT INTO users (email, password, salt) VALUES (?, ?, ?)', [users], (err, result) => {
             console.log(result);
       
         });
